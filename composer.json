@@ -1,0 +1,22 @@
+{
+  "name": "expresser/taxonomy",
+  "support": {
+    "issues": "https://github.com/expresser/taxonomy/issues",
+    "source": "https://github.com/expresser/taxonomy"
+  },
+  "authors": [
+    {
+      "name": "Graham Blevins",
+      "email": "hgblevins@gmail.com"
+    }
+  ],
+  "require": {
+    "php": ">=5.4.0",
+    "expresser/support": "dev-master"
+  },
+  "autoload": {
+    "psr-4": {
+      "Expresser\\Taxonomy\\": ""
+    }
+  }
+}
