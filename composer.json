@@ -11,6 +11,10 @@
     }
   ],
   "repositories":[
+    {
+      "type": "vcs",
+      "url": "https://github.com/expresser/posttype"
+    },
 		{
       "type": "vcs",
       "url": "https://github.com/expresser/support"
@@ -18,6 +22,7 @@
 	],
   "require": {
     "php": ">=5.4.0",
+    "expresser/posttype": "dev-master",
     "expresser/support": "dev-master"
   },
   "autoload": {

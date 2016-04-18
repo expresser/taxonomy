@@ -20,7 +20,7 @@ abstract class Base extends \Expresser\Support\Model {
 
   public function newQuery() {
 
-    return (new Query)->setModel($this)->whereEmpty(true);
+    return (new Query)->setModel($this)->empty(true);
   }
 
   public function permalink() {

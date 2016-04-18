@@ -14,22 +14,22 @@ class Query extends \Expresser\Support\Builder {
 
   public function find($id) {
 
-    return $this->whereTerm($id)->first();
+    return $this->term($id)->first();
   }
 
   public function findAll(array $ids) {
 
-    return $this->whereTerms($ids)->get();
+    return $this->terms($ids)->get();
   }
 
   public function findBySlug($slug) {
 
-    return $this->whereTerm($slug)->first();
+    return $this->term($slug)->first();
   }
 
   public function first() {
 
-    return $this->limit(1)->get()->first();
+    return $this->number(1)->get()->first();
   }
 
   public function get() {
@@ -39,7 +39,7 @@ class Query extends \Expresser\Support\Builder {
     return $this->getModels($terms);
   }
 
-  public function limit($number) {
+  public function number($number) {
 
     if (is_integer($number)) {
 
@@ -61,7 +61,7 @@ class Query extends \Expresser\Support\Builder {
     return $this;
   }
 
-  public function whereChildOf($id) {
+  public function childOf($id) {
 
     if (is_integer($id)) {
 
@@ -75,7 +75,7 @@ class Query extends \Expresser\Support\Builder {
     return $this;
   }
 
-  public function whereEmpty($empty) {
+  public function empty($empty) {
 
     if (is_bool($empty)) {
 
@@ -89,7 +89,7 @@ class Query extends \Expresser\Support\Builder {
     return $this;
   }
 
-  public function whereParent($id) {
+  public function parent($id) {
 
     if (is_integer($id)) {
 
@@ -103,11 +103,11 @@ class Query extends \Expresser\Support\Builder {
     return $this;
   }
 
-  public function wherePost($postId) {
+  public function post($postId) {
 
     if (is_integer($postId)) {
 
-      $this->wherePosts(array($postId));
+      $this->posts([$postId]);
     }
     else {
 
@@ -117,21 +117,21 @@ class Query extends \Expresser\Support\Builder {
     return $this;
   }
 
-  public function wherePosts(array $postIds) {
+  public function posts(array $postIds) {
 
-    $ids = wp_get_object_terms($postIds, $this->model->taxonomy, array('fields' => 'ids'));
+    $ids = wp_get_object_terms($postIds, $this->model->taxonomy, ['fields' => 'ids']);
 
-    return $this->whereTerms($ids);
+    return $this->terms($ids);
   }
 
-  public function wherePostType($postType) {
+  public function postType($postType) {
 
-    $ids = Post::whereType($postType)->get()->lists('ID');
+    $ids = Post::type($postType)->get()->lists('ID');
 
-    return $this->wherePosts($ids);
+    return $this->posts($ids);
   }
 
-  public function whereSlug($slug) {
+  public function slug($slug) {
 
     if (is_string($slug)) {
 
@@ -145,14 +145,14 @@ class Query extends \Expresser\Support\Builder {
     return $this;
   }
 
-  public function whereSlugs(array $slugs) {
+  public function slugs(array $slugs) {
 
     $this->params['slug'] = $slugs;
 
     return $this;
   }
 
-  public function whereTerm($id) {
+  public function term($id) {
 
     if (is_integer($id)) {
 
@@ -160,11 +160,11 @@ class Query extends \Expresser\Support\Builder {
 
       if ($id > 0) $ids[] = $id;
 
-      $this->whereTerms($ids);
+      $this->terms($ids);
     }
     else if (is_string($id)) {
 
-      $this->whereSlug($id);
+      $this->slug($id);
     }
     else {
 
@@ -174,9 +174,9 @@ class Query extends \Expresser\Support\Builder {
     return $this;
   }
 
-  public function whereTerms(array $ids, $operator = 'IN') {
+  public function terms(array $ids, $operator = 'IN') {
 
-    $ids = count($ids) > 0 ? $ids : array(mt_getrandmax());
+    $ids = count($ids) > 0 ? $ids : [PHP_INT_MAX];
 
     switch ($operator) {
 
