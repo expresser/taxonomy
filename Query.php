@@ -29,7 +29,14 @@ class Query extends \Expresser\Support\Builder {
 
   public function first() {
 
-    return $this->number(1)->get()->first();
+    return $this->limit(1)->get()->first();
+  }
+
+  public function limit($number) {
+
+    $this->number($number);
+
+    return $this;
   }
 
   public function get() {
@@ -75,7 +82,7 @@ class Query extends \Expresser\Support\Builder {
     return $this;
   }
 
-  public function empty($empty) {
+  public function hideEmpty($empty = true) {
 
     if (is_bool($empty)) {
 
