@@ -4,14 +4,7 @@ use Exception;
 
 abstract class Base extends \Expresser\Support\Model {
 
-  public function getAttributeFromArray($key) {
-
-    $value = parent::getAttributeFromArray($key);
-
-    if (is_null($value)) $value = parent::getAttributeFromArray('term_' . $key);
-
-    return $value;
-  }
+  protected $fieldPrefix = 'term_';
 
   public function getIdAttribute($value) {
 
