@@ -28,19 +28,17 @@ abstract class Base extends \Expresser\Support\Model {
     return $this->permalink;
   }
 
-  public static function register() {
-
-    static::registerTaxonomy();
-
-    parent::register();
-  }
-
   public static function in(array $ids) {
 
     return count(array_intersect($ids, self::get()->lists('id'))) > 0;
   }
 
-  protected static function registerTaxonomy() {
+  public static function registerHooks($class) {
+
+    add_action('init', [$class, 'registerTaxonomy']);
+  }
+
+  public static function registerTaxonomy() {
 
     throw new Exception('A new taxonomy must override registerTaxonomy.');
   }
