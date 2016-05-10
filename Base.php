@@ -35,7 +35,7 @@ abstract class Base extends \Expresser\Support\Model {
 
   public static function registerHooks($class) {
 
-    add_action('init', [$class, 'registerTaxonomy']);
+    add_action('init', [$class, 'registerTaxonomy'], -PHP_INT_MAX);
   }
 
   public static function registerTaxonomy() {
