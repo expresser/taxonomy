@@ -2,7 +2,7 @@
 
 use InvalidArgumentException;
 
-use Expresser\Type\Post;
+use Expresser\PostType\Post;
 
 class Query extends \Expresser\Support\Builder {
 
