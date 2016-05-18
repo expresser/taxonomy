@@ -41,7 +41,7 @@ class Query extends \Expresser\Support\Builder {
 
   public function get() {
 
-    $terms = get_terms($this->model->taxonomy, $this->params);
+    $terms = get_terms(array_merge($this->params, ['taxonomy' => $this->model->taxonomy]));
 
     return $this->getModels($terms);
   }
@@ -86,7 +86,7 @@ class Query extends \Expresser\Support\Builder {
 
     if (is_bool($empty)) {
 
-      $this->params['hide_empty'] = !$empty;
+      $this->params['hide_empty'] = $empty;
     }
     else {
 
