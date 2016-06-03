@@ -2,9 +2,22 @@
 
 use Exception;
 
+use WP_Term;
+
 abstract class Base extends \Expresser\Support\Model {
 
   protected $fieldPrefix = 'term_';
+
+  protected $term;
+
+  public function __construct(WP_Term $term = null) {
+
+    $this->term = $term ?: new WP_Term((object)[
+      'taxonomy' => $this->taxonomy,
+    ]);
+
+    parent::__construct($this->term->to_array());
+  }
 
   public function getIdAttribute($value) {
 

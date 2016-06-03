@@ -41,7 +41,11 @@ class Query extends \Expresser\Support\Builder {
 
   public function get() {
 
-    $terms = get_terms(array_merge($this->params, ['taxonomy' => $this->model->taxonomy]));
+    $params = array_merge($this->params, [
+      'taxonomy' => $this->model->taxonomy,
+    ]);
+
+    $terms = get_terms($params);
 
     return $this->getModels($terms);
   }
