@@ -26,7 +26,9 @@ abstract class Base extends \Expresser\Support\Model {
 
   public function newQuery() {
 
-    return (new Query)->setModel($this)->hideEmpty(false);
+    $query = (new Query)->setModel($this);
+
+    return $query->taxonomy($this->taxonomy)->hideEmpty(false);
   }
 
   public function permalink() {
