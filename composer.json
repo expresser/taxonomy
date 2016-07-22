@@ -12,8 +12,8 @@
   ],
   "require": {
     "php": ">=5.4.0",
-    "expresser/posttype": "0.1.21",
-    "expresser/support": "0.1.21"
+    "expresser/posttype": "0.1.22",
+    "expresser/support": "0.1.22"
   },
   "autoload": {
     "psr-4": {

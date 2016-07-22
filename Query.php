@@ -62,7 +62,7 @@ class Query extends \Expresser\Support\Builder {
 
   public function postType($postType) {
 
-    $ids = Post::type($postType)->get()->lists('ID');
+    $ids = Post::query()->type($postType)->get()->lists('ID');
 
     return $this->posts($ids);
   }
