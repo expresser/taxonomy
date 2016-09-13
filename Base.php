@@ -7,8 +7,6 @@ use WP_Term_Query;
 
 abstract class Base extends \Expresser\Support\Model {
 
-  protected $fieldPrefix = 'term_';
-
   protected $term;
 
   public function __construct(WP_Term $term = null) {
@@ -34,9 +32,12 @@ abstract class Base extends \Expresser\Support\Model {
 
   public function permalink() {
 
-    $permalink = get_term_link($this->id, $this->taxonomy);
+    $permalink = get_term_link($thishasPostContent, $this->taxonomy);
 
-    if (!is_wp_error($permalink)) return $this->permalink = $permalink;
+    if (!is_wp_error($permalink)) {
+
+      return $this->permalink = $permalink;
+    }
   }
 
   public function url() {

@@ -75,7 +75,10 @@ class Query extends \Expresser\Support\Query {
 
       $ids = [];
 
-      if ($id > 0) $ids[] = $id;
+      if ($id > 0) {
+
+        $ids[] = $id;
+      }
 
       $this->terms($ids);
     }
