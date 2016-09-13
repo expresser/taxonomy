@@ -3,6 +3,7 @@
 use Exception;
 
 use WP_Term;
+use WP_Term_Query;
 
 abstract class Base extends \Expresser\Support\Model {
 
@@ -26,7 +27,7 @@ abstract class Base extends \Expresser\Support\Model {
 
   public function newQuery() {
 
-    $query = (new Query)->setModel($this);
+    $query = (new Query(new WP_Term_Query))->setModel($this);
 
     return $query->taxonomy($this->taxonomy)->hideEmpty(false);
   }

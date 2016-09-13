@@ -4,13 +4,17 @@ use InvalidArgumentException;
 
 use Expresser\PostType\Post;
 
-class Query extends \Expresser\Support\Builder {
+use WP_Term_Query;
 
-  protected $params = [];
+class Query extends \Expresser\Support\Query {
 
-  protected $exclude = [];
+  public function __construct(WP_Term_Query $query) {
 
-  protected $include = [];
+    $this->include = [];
+    $this->exclude = [];
+
+    parent::__construct($query);
+  }
 
   public function find($id) {
 
@@ -34,9 +38,7 @@ class Query extends \Expresser\Support\Builder {
 
   public function limit($number) {
 
-    $this->number($number);
-
-    return $this;
+    return $this->number($number);
   }
 
   public function post($postId) {
@@ -99,39 +101,31 @@ class Query extends \Expresser\Support\Builder {
 
         $this->exclude = array_diff($this->exclude, $ids);
         $this->include = $ids;
+
         break;
 
       case 'NOT IN':
 
         $this->include = array_diff($this->include, $ids);
         $this->exclude = $ids;
+
         break;
     }
-
-    $this->params['include'] = $this->include;
-    $this->params['exclude'] = $this->exclude;
 
     return $this;
   }
 
-  public function get() {
-
-    $terms = get_terms($this->params);
-
-    return $this->getModels($terms);
-  }
-
   public function taxonomy($taxonomy) {
 
-    $this->params['taxonomy'] = $taxonomy;
+    $this->taxonomy = $taxonomy;
 
     return $this;
   }
 
   public function orderBy($orderby = 'name', $order = 'ASC') {
 
-    $this->params['orderby'] = $orderby;
-    $this->params['order'] = $order;
+    $this->orderby = $orderby;
+    $this->order = $order;
 
     return $this;
   }
@@ -140,7 +134,7 @@ class Query extends \Expresser\Support\Builder {
 
     if (is_bool($empty)) {
 
-      $this->params['hide_empty'] = $empty;
+      $this->hide_empty = $empty;
     }
     else {
 
@@ -154,7 +148,7 @@ class Query extends \Expresser\Support\Builder {
 
     if (is_integer($number)) {
 
-      $this->params['number'] = $number;
+      $this->number = $number;
     }
     else {
 
@@ -168,7 +162,7 @@ class Query extends \Expresser\Support\Builder {
 
     if (is_string($slug)) {
 
-      $this->params['slug'] = $slug;
+      $this->slug = $slug;
     }
     else {
 
@@ -180,7 +174,7 @@ class Query extends \Expresser\Support\Builder {
 
   public function slugs(array $slugs) {
 
-    $this->params['slug'] = $slugs;
+    $this->slug = $slugs;
 
     return $this;
   }
@@ -189,7 +183,7 @@ class Query extends \Expresser\Support\Builder {
 
     if (is_integer($id)) {
 
-      $this->params['child_of'] = $id;
+      $this->child_of = $id;
     }
     else {
 
@@ -203,7 +197,7 @@ class Query extends \Expresser\Support\Builder {
 
     if (is_integer($id)) {
 
-      $this->params['parent'] = $id;
+      $this->parent = $id;
     }
     else {
 
