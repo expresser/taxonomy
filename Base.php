@@ -32,7 +32,7 @@ abstract class Base extends \Expresser\Support\Model {
 
   public function permalink() {
 
-    $permalink = get_term_link($thishasPostContent, $this->taxonomy);
+    $permalink = get_term_link($this->term_id, $this->taxonomy);
 
     if (!is_wp_error($permalink)) {
 
@@ -47,7 +47,7 @@ abstract class Base extends \Expresser\Support\Model {
 
   public static function in(array $ids) {
 
-    return count(array_intersect($ids, self::get()->lists('id'))) > 0;
+    return count(array_intersect($ids, self::get()->lists('term_id'))) > 0;
   }
 
   public static function registerHooks($class) {
