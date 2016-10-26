@@ -1,9 +1,11 @@
-<?php namespace Expresser\Taxonomy;
+<?php
 
-class Category extends Native {
+namespace Expresser\Taxonomy;
 
-  public function taxonomy() {
-
-    return 'category';
-  }
+class Category extends Native
+{
+    public function taxonomy()
+    {
+        return 'category';
+    }
 }
