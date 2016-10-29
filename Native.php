@@ -1,11 +1,12 @@
-<?php namespace Expresser\Taxonomy;
+<?php
 
-use Exception;
+namespace Expresser\Taxonomy;
 
-abstract class Native extends Base {
-
-  public static function registerTaxonomy() {
+abstract class Native extends Base
+{
+    public static function registerTaxonomy()
+    {
 
     // Do not implement registerTaxonomy for native or exisitng terms
-  }
+    }
 }

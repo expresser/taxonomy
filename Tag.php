@@ -1,9 +1,11 @@
-<?php namespace Expresser\Taxonomy;
+<?php
 
-class Tag extends Native {
+namespace Expresser\Taxonomy;
 
-  public function taxonomy() {
-
-    return 'post_tag';
-  }
+class Tag extends Native
+{
+    public function taxonomy()
+    {
+        return 'post_tag';
+    }
 }
