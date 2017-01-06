@@ -2,11 +2,11 @@
 
 namespace Expresser\Taxonomy;
 
-use Expresser\PostType\Post;
+use Expresser\Support\Query as BaseQuery;
 use InvalidArgumentException;
 use WP_Term_Query;
 
-class Query extends \Expresser\Support\Query
+class Query extends BaseQuery
 {
     public function __construct(WP_Term_Query $query)
     {
@@ -14,56 +14,6 @@ class Query extends \Expresser\Support\Query
         $this->exclude = [];
 
         parent::__construct($query);
-    }
-
-    public function find($id)
-    {
-        return $this->term($id)->first();
-    }
-
-    public function findAll(array $ids)
-    {
-        return $this->terms($ids)->get();
-    }
-
-    public function findBySlug($slug)
-    {
-        return $this->term($slug)->first();
-    }
-
-    public function first()
-    {
-        return $this->limit(1)->get()->first();
-    }
-
-    public function limit($number)
-    {
-        return $this->number($number);
-    }
-
-    public function post($postId)
-    {
-        if (is_int($postId)) {
-            $this->posts([$postId]);
-        } else {
-            throw new InvalidArgumentException();
-        }
-
-        return $this;
-    }
-
-    public function posts(array $postIds)
-    {
-        $ids = wp_get_object_terms($postIds, $this->model->taxonomy, ['fields' => 'ids']);
-
-        return $this->terms($ids);
-    }
-
-    public function postType($postType)
-    {
-        $ids = Post::query()->type($postType)->get()->lists('ID');
-
-        return $this->posts($ids);
     }
 
     public function term($id)
@@ -90,21 +40,15 @@ class Query extends \Expresser\Support\Query
         $ids = count($ids) > 0 ? $ids : [PHP_INT_MAX];
 
         switch ($operator) {
-
-      case 'IN':
-
-        $this->exclude = array_diff($this->exclude, $ids);
-        $this->include = $ids;
-
-        break;
-
-      case 'NOT IN':
-
-        $this->include = array_diff($this->include, $ids);
-        $this->exclude = $ids;
-
-        break;
-    }
+            case 'IN':
+                $this->exclude = array_diff($this->exclude, $ids);
+                $this->include = $ids;
+                break;
+            case 'NOT IN':
+                $this->include = array_diff($this->include, $ids);
+                $this->exclude = $ids;
+                break;
+        }
 
         return $this;
     }
@@ -184,5 +128,10 @@ class Query extends \Expresser\Support\Query
         }
 
         return $this;
+    }
+
+    public function limit($number)
+    {
+        return $this->number($number);
     }
 }

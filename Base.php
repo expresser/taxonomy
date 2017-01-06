@@ -3,18 +3,19 @@
 namespace Expresser\Taxonomy;
 
 use Exception;
+use Expresser\Support\Model;
 use WP_Term;
 use WP_Term_Query;
 
-abstract class Base extends \Expresser\Support\Model
+abstract class Base extends Model
 {
     protected $term;
 
     public function __construct(WP_Term $term = null)
     {
         $this->term = $term ?: new WP_Term((object) [
-      'taxonomy' => $this->taxonomy,
-    ]);
+            'taxonomy' => $this->taxonomy,
+        ]);
 
         parent::__construct($this->term->to_array());
     }
@@ -26,7 +27,7 @@ abstract class Base extends \Expresser\Support\Model
 
     public function newQuery()
     {
-        $query = (new Query(new WP_Term_Query()))->setModel($this);
+        $query = (new Builder(new Query(new WP_Term_Query)))->setModel($this);
 
         return $query->taxonomy($this->taxonomy)->hideEmpty(false);
     }
