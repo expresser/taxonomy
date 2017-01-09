@@ -9,6 +9,8 @@ use WP_Term_Query;
 
 abstract class Base extends Model
 {
+    public $taxonomy;
+
     protected $term;
 
     public function __construct(WP_Term $term = null)
@@ -20,11 +22,6 @@ abstract class Base extends Model
         parent::__construct($this->term->to_array());
     }
 
-    public function getIdAttribute($value)
-    {
-        return (int) $value;
-    }
-
     public function newQuery()
     {
         $query = (new Builder(new Query(new WP_Term_Query)))->setModel($this);
@@ -32,16 +29,28 @@ abstract class Base extends Model
         return $query->taxonomy($this->taxonomy)->hideEmpty(false);
     }
 
-    public function permalink()
+    public function getCacheableAccessors()
+    {
+        return array_merge(parent::getCacheableAccessors(), [
+            'permalink',
+        ]);
+    }
+
+    public function getIdAttribute($value)
+    {
+        return (int)$value;
+    }
+
+    public function getPermalinkAttribute()
     {
         $permalink = get_term_link($this->term_id, $this->taxonomy);
 
         if (!is_wp_error($permalink)) {
-            return $this->permalink = $permalink;
+            return $permalink;
         }
     }
 
-    public function url()
+    public function getUrlAttribute()
     {
         return $this->permalink;
     }
@@ -60,6 +69,4 @@ abstract class Base extends Model
     {
         throw new Exception('A new taxonomy must override registerTaxonomy.');
     }
-
-    abstract public function taxonomy();
 }
