@@ -2,6 +2,7 @@
 
 namespace Expresser\Taxonomy;
 
+use Closure;
 use Expresser\Support\Query as BaseQuery;
 use InvalidArgumentException;
 use WP_Term_Query;
@@ -141,9 +142,80 @@ class Query extends BaseQuery
         return $this;
     }
 
+    public function metaCompare($compare)
+    {
+        $this->setQueryVar('meta_compare', $compare);
+
+        return $this;
+    }
+
+    public function metaKey($key)
+    {
+        $this->setQueryVar('meta_key', $key);
+
+        return $this;
+    }
+
+    public function metaType($type)
+    {
+        $this->setQueryVar('meta_type', $type);
+
+        return $this;
+    }
+
+    public function metaValue($value)
+    {
+        $this->setQueryVar('meta_value', $value);
+
+        return $this;
+    }
+
+    public function meta($key, $value, $compare = '=', $type = 'CHAR')
+    {
+        $meta_query = compact('key', 'value', 'compare', 'type');
+
+        $meta_query = array_merge($this->getQueryVar('meta_query'), [$meta_query]);
+
+        $this->setQueryVar('meta_query', $meta_query);
+
+        return $this;
+    }
+
+    public function metas(Closure $callback, $relation = 'AND')
+    {
+        call_user_func($callback, $this);
+
+        $meta_query = $this->getQueryVar('meta_query');
+
+        if (count($meta_query) > 1) {
+
+            $meta_query = array_merge(['relation' => $relation], $meta_query);
+
+            $this->setQueryVar('meta_query', $meta_query);
+        }
+
+        return $this;
+    }
+
+    public function metasSub(Closure $callback, $relation = 'AND')
+    {
+        $query = (new static(new WP_Query));
+
+        $query->metas($callback, $relation);
+
+        $meta_query = $query->getQueryVar('meta_query');
+
+        $meta_query = array_merge($this->getQueryVar('meta_query'), [$meta_query]);
+
+        $this->setQueryVar('meta_query', $meta_query);
+
+        return $this;
+    }
+
     protected function initQueryVars()
     {
         $this->setQueryVar('exclude', []);
         $this->setQueryVar('include', []);
+        $this->setQueryVar('meta_query', []);
     }
 }
