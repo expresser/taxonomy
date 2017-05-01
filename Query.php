@@ -14,6 +14,33 @@ class Query extends BaseQuery
         parent::__construct($query);
     }
 
+    public function getExcludeQueryVar($value)
+    {
+        if (is_null($value)) {
+            $value = [];
+        }
+
+        return $value;
+    }
+
+    public function getIncludeQueryVar($value)
+    {
+        if (is_null($value)) {
+            $value = [];
+        }
+
+        return $value;
+    }
+
+    public function getMetaQueryQueryVar($value)
+    {
+        if (is_null($value)) {
+            $value = [];
+        }
+
+        return $value;
+    }
+
     public function execute()
     {
         $terms = $this->query->get_terms();
@@ -199,7 +226,7 @@ class Query extends BaseQuery
 
     public function metasSub(Closure $callback, $relation = 'AND')
     {
-        $query = (new static(new WP_Query));
+        $query = (new static(new WP_Term_Query));
 
         $query->metas($callback, $relation);
 
@@ -210,12 +237,5 @@ class Query extends BaseQuery
         $this->setQueryVar('meta_query', $meta_query);
 
         return $this;
-    }
-
-    protected function initQueryVars()
-    {
-        $this->setQueryVar('exclude', []);
-        $this->setQueryVar('include', []);
-        $this->setQueryVar('meta_query', []);
     }
 }
