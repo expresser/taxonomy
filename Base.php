@@ -55,6 +55,19 @@ abstract class Base extends Model
         return $this->permalink;
     }
 
+    public static function getTaxonomy()
+    {
+        static $taxonomy;
+
+        if (is_null($taxonomy)) {
+            $term = new static;
+
+            $taxonomy = $term->taxonomy;
+        }
+
+        return $taxonomy;
+    }
+
     public static function in(array $ids)
     {
         return count(array_intersect($ids, self::get()->lists('term_id'))) > 0;
